@@ -23,13 +23,13 @@ public class AsciiTable {
     }
     
     @discardableResult
-    public func add(row: Row) -> AsciiTable {
+    public func add(_ row: Row) -> AsciiTable {
         self.rows.append(row)
         return self
     }
     
     @discardableResult
-    public func add(row values: RowValues) -> AsciiTable {
+    public func add(_ values: RowValues) -> AsciiTable {
         self.rows.append(.row(values))
         return self
     }
@@ -82,7 +82,7 @@ public class AsciiTable {
         }
         for row in rows {
             switch row {
-            case .row(let rowValues):
+            case .row:
                 output.append("\n│ ")
                 for index in (0..<columnAmount) {
                     let data = row[safeIndex: index] ?? ""

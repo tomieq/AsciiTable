@@ -12,8 +12,8 @@ struct AsciiTableTests {
     @Test
     func regularTable() {
         let table = AsciiTable(labels: ["A", "BB"])
-        table.add(row: ["cccccc", "d"])
-        table.add(row: ["", "ffffffffffff"])
+        table.add(["cccccc", "d"])
+        table.add(["", "ffffffffffff"])
         let expected = """
         ╒══════════╤═══════════════╕
         │  A       │ BB            │
@@ -28,8 +28,8 @@ struct AsciiTableTests {
     @Test
     func tableWithoutLabels() {
         let table = AsciiTable(labels: [])
-        table.add(row: ["cccccc", "d"])
-        table.add(row: ["", "ffffffffffff"])
+        table.add(["cccccc", "d"])
+        table.add(["", "ffffffffffff"])
         let expected = """
         ╒══════════╤═══════════════╕
         │  cccccc  │ d             │
@@ -41,9 +41,9 @@ struct AsciiTableTests {
     @Test
     func tableWithExtraDivider() {
         let table = AsciiTable(labels: ["A", "BB"])
-        table.add(row: ["cccccc", "d"])
+        table.add(["cccccc", "d"])
         table.addDivider()
-        table.add(row: ["", "ffffffffffff"])
+        table.add(["", "ffffffffffff"])
         let expected = """
         ╒══════════╤═══════════════╕
         │  A       │ BB            │
@@ -58,9 +58,9 @@ struct AsciiTableTests {
     @Test
     func tableNoLabelsWithExtraDivider() {
         let table = AsciiTable(labels: [])
-        table.add(row: ["cccccc", "d"])
+        table.add(["cccccc", "d"])
         table.addDivider()
-        table.add(row: ["", "ffffffffffff"])
+        table.add(.row(["", "ffffffffffff"]))
         let expected = """
         ╒══════════╤═══════════════╕
         │  cccccc  │ d             │
@@ -74,8 +74,8 @@ struct AsciiTableTests {
     @Test
     func tableWithNilLabel() {
         let table = AsciiTable(labels: [nil, "BB"])
-        table.add(row: ["cccccc", "d"])
-        table.add(row: ["", "ffffffffffff"])
+        table.add(["cccccc", "d"])
+        table.add(["", "ffffffffffff"])
         let expected = """
         ╒══════════╤═══════════════╕
         │          │ BB            │
@@ -90,8 +90,8 @@ struct AsciiTableTests {
     @Test
     func tableWithNilValue() {
         let table = AsciiTable(labels: ["A", "BB"])
-        table.add(row: ["cccccc", "d"])
-        table.add(row: [nil, "ffffffffffff"])
+        table.add(["cccccc", "d"])
+        table.add([nil, "ffffffffffff"])
         let expected = """
         ╒══════════╤═══════════════╕
         │  A       │ BB            │
@@ -101,5 +101,15 @@ struct AsciiTableTests {
         └──────────┴───────────────┘
         """
         #expect(table.output == expected)
+    }
+    
+    @Test
+    func ss() {
+        let table = AsciiTable(labels: ["endpoint", "method", "content-type"])
+        table.add(["/warhouse", "POST", "application/json"])
+        table.add(["/shop", "GET", "text/html"])
+        table.add(["/order", "POST", "application/json"])
+        table.add(["/admin/auth/v1/token", "GET", "application/json"])
+        print(table)
     }
 }
