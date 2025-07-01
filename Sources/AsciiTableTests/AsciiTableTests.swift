@@ -140,8 +140,8 @@ struct AsciiTableTests {
     }
     
     @Test
-    func ss() {
-        let table = AsciiTable(labels: ["endpoint", "method", "content-type"])
+    func docs() {
+        let table = AsciiTable(labels: ["endpoint", "allowed methods", "content-type"])
         table.add(["/warhouse", "POST", "application/json"])
         table.add(["/shop", "GET", "text/html"])
         table.add(["/order", "POST", "application/json"])

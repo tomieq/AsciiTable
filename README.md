@@ -4,7 +4,7 @@ This is simple Swift library for formatting text tables.
 
 ### Usage
 ```swift
-let table = AsciiTable(labels: ["endpoint", "method", "content-type"])
+let table = AsciiTable(labels: ["endpoint", "allowed methods", "content-type"])
 table.add(["/warhouse", "POST", "application/json"])
 table.add(["/shop", "GET", "text/html"])
 table.add(["/order", "POST", "application/json"])
@@ -13,14 +13,14 @@ print(table)
 ```
 Output:
 ```
-╒════════════════════════╤═════════╤═══════════════════╕
-│  endpoint              │ method  │ content-type      │
-├────────────────────────┼─────────┼───────────────────┤
-│  /warhouse             │ POST    │ application/json  │
-│  /shop                 │ GET     │ text/html         │
-│  /order                │ POST    │ application/json  │
-│  /admin/auth/v1/token  │ GET     │ application/json  │
-└────────────────────────┴─────────┴───────────────────┘
+╒════════════════════════╤══════════════════╤═══════════════════╕
+│  endpoint              │ allowed methods  │ content-type      │
+╞════════════════════════╪══════════════════╪═══════════════════╡
+│  /warhouse             │ POST             │ application/json  │
+│  /shop                 │ GET              │ text/html         │
+│  /order                │ POST             │ application/json  │
+│  /admin/auth/v1/token  │ GET              │ application/json  │
+└────────────────────────┴──────────────────┴───────────────────┘
 ```
 
 ### Swift Package Manager.
@@ -30,7 +30,7 @@ import PackageDescription
 let package = Package(
     name: "MyServer",
     dependencies: [
-        .package(url: "https://github.com/tomieq/AsciiTable", from: "1.0.0")
+        .package(url: "https://github.com/tomieq/AsciiTable", from: "1.1.0")
     ]
 )
 ```
