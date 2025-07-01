@@ -6,7 +6,7 @@
 //
 
 
-public typealias RowValues = [CustomStringConvertible]
+public typealias RowValues = [CustomStringConvertible?]
 
 public enum Row {
     case row(RowValues)
@@ -17,7 +17,7 @@ public class AsciiTable {
     let labels: Row
     var rows: [Row]
     
-    public init(labels: [CustomStringConvertible], rows: [Row] = []) {
+    public init(labels: RowValues, rows: [Row] = []) {
         self.labels = .row(labels)
         self.rows = rows
     }
@@ -44,7 +44,7 @@ public class AsciiTable {
         var output = ""
         
         let columnAmount = max(rows.map { $0.count }.max() ?? 1, labels.count)
-
+        
         var topBorder = ""
         var middleDivider = "\n"
         var bottomBorder = "\n"
@@ -67,7 +67,7 @@ public class AsciiTable {
             middleDivider.append(range.map{_ in "─" }.joined())
             middleDivider.append(column == columnAmount - 1 ? "┤" : "┼")
         }
-
+        
         output.append(topBorder)
         if labels.count > 0 {
             output.append("\n│ ")
@@ -109,7 +109,7 @@ extension AsciiTable: CustomStringConvertible {
 
 extension RowValues {
     func size(for index: Int) -> Int {
-        self[safeIndex: index]?.description.count ?? 0
+        self[safeIndex: index]??.description.count ?? 0
     }
 }
 
@@ -134,7 +134,7 @@ extension Row {
     subscript(safeIndex index: Int) -> CustomStringConvertible? {
         switch self {
         case .row(let rowValues):
-            rowValues[safeIndex: index]
+            rowValues[safeIndex: index] ?? nil
         case .divider:
             nil
         }

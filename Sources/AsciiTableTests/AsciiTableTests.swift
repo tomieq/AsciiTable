@@ -70,4 +70,36 @@ struct AsciiTableTests {
         """
         #expect(table.output == expected)
     }
+    
+    @Test
+    func tableWithNilLabel() {
+        let table = AsciiTable(labels: [nil, "BB"])
+        table.add(row: ["cccccc", "d"])
+        table.add(row: ["", "ffffffffffff"])
+        let expected = """
+        ╒══════════╤═══════════════╕
+        │          │ BB            │
+        ├──────────┼───────────────┤
+        │  cccccc  │ d             │
+        │          │ ffffffffffff  │
+        └──────────┴───────────────┘
+        """
+        #expect(table.output == expected)
+    }
+
+    @Test
+    func tableWithNilValue() {
+        let table = AsciiTable(labels: ["A", "BB"])
+        table.add(row: ["cccccc", "d"])
+        table.add(row: [nil, "ffffffffffff"])
+        let expected = """
+        ╒══════════╤═══════════════╕
+        │  A       │ BB            │
+        ├──────────┼───────────────┤
+        │  cccccc  │ d             │
+        │          │ ffffffffffff  │
+        └──────────┴───────────────┘
+        """
+        #expect(table.output == expected)
+    }
 }
