@@ -67,15 +67,17 @@ public class AsciiTable {
         }
 
         output.append(topBorder)
-        output.append("\n│ ")
-        for index in (0..<columnAmount) {
-            let label = labels.data[safeIndex: index] ?? ""
-            output.append(" \(label)")
-            let spacing = columnWidth[index] - label.description.count
-            output.append((0...spacing).map { _ in " " }.joined())
-            output.append(" │")
+        if !labels.data.isEmpty {
+            output.append("\n│ ")
+            for index in (0..<columnAmount) {
+                let label = labels.data[safeIndex: index] ?? ""
+                output.append(" \(label)")
+                let spacing = columnWidth[index] - label.description.count
+                output.append((0...spacing).map { _ in " " }.joined())
+                output.append(" │")
+            }
+            output.append(middleDivider)
         }
-        output.append(middleDivider)
         for row in rows {
             output.append("\n│ ")
             for index in (0..<columnAmount) {
@@ -88,5 +90,11 @@ public class AsciiTable {
         }
         output.append(bottomBorder)
         return output
+    }
+}
+
+extension AsciiTable: CustomStringConvertible {
+    public var description: String {
+        output
     }
 }
