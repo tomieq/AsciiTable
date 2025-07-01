@@ -17,13 +17,19 @@ public class Row {
     }
 }
 
-public struct AsciiTable {
+public class AsciiTable {
     let labels: Row
-    let rows: [Row]
+    var rows: [Row]
     
-    public init(labels: [CustomStringConvertible], rows: [Row]) {
+    public init(labels: [CustomStringConvertible], rows: [Row] = []) {
         self.labels = Row(labels)
         self.rows = rows
+    }
+    
+    @discardableResult
+    public func add(row: Row) -> AsciiTable {
+        self.rows.append(row)
+        return self
     }
     
     public var output: String {
