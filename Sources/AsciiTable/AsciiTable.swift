@@ -32,6 +32,12 @@ public class AsciiTable {
         return self
     }
     
+    @discardableResult
+    public func add(row data: [CustomStringConvertible]) -> AsciiTable {
+        self.rows.append(Row(data))
+        return self
+    }
+    
     public var output: String {
         var output = ""
         
