@@ -18,3 +18,9 @@ extension Array {
         }
     }
 }
+
+extension Array where Element == CustomStringConvertible? {
+    var cells: [Cell] {
+        self.map { Cell(content: $0?.description ?? "") }
+    }
+}

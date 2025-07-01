@@ -6,31 +6,20 @@
 //
 
 
-public typealias RowValues = [CustomStringConvertible?]
 
-public enum Row {
-    case row(RowValues)
-    case divider
-}
 
 public class AsciiTable {
     let labels: Row
     var rows: [Row]
     
-    public init(labels: RowValues, rows: [Row] = []) {
-        self.labels = .row(labels)
-        self.rows = rows
-    }
-    
-    @discardableResult
-    public func add(_ row: Row) -> AsciiTable {
-        self.rows.append(row)
-        return self
+    public init(labels: RowValues) {
+        self.labels = .row(labels.cells)
+        self.rows = []
     }
     
     @discardableResult
     public func add(_ values: RowValues) -> AsciiTable {
-        self.rows.append(.row(values))
+        self.rows.append(.row(values.cells))
         return self
     }
     
@@ -43,6 +32,7 @@ public class AsciiTable {
     public var output: String {
         var output = ""
         
+        let rows = rows.flatMap { MultilineAdjuster.adjust($0) }
         let columnAmount = max(rows.map { $0.count }.max() ?? 1, labels.count)
         
         var topBorder = ""
@@ -54,8 +44,8 @@ public class AsciiTable {
         middleDivider.append("├─")
         var columnWidth: [Int] = []
         for column in (0..<columnAmount) {
-            let maxWidthFromRows = rows.map { $0.size(for: column) }.max() ?? 1
-            let maxWidth = max(maxWidthFromRows, labels[safeIndex: column]?.description.count ?? 1)
+            let maxWidthFromRows = rows.map { $0.width(for: column) }.max() ?? 1
+            let maxWidth = max(maxWidthFromRows, labels[safeIndex: column]?.content.count ?? 1)
             columnWidth.append(maxWidth)
             let range = 0...(maxWidth + 2)
             topBorder.append(range.map{_ in "═" }.joined())
@@ -70,13 +60,17 @@ public class AsciiTable {
         
         output.append(topBorder)
         if labels.count > 0 {
-            output.append("\n│ ")
-            for index in (0..<columnAmount) {
-                let label = labels[safeIndex: index] ?? ""
-                output.append(" \(label)")
-                let spacing = columnWidth[index] - label.description.count
-                output.append((0...spacing).map { _ in " " }.joined())
-                output.append(" │")
+            let labelsAdjusted = MultilineAdjuster.adjust(labels)
+            for labels in labelsAdjusted {
+                output.append("\n│ ")
+                for index in (0..<columnAmount) {
+                    let cell = labels[safeIndex: index]
+                    let text = cell?.content ?? ""
+                    output.append(" \(text)")
+                    let spacing = columnWidth[index] - text.count
+                    output.append((0...spacing).map { _ in " " }.joined())
+                    output.append(" │")
+                }
             }
             output.append(middleDivider)
         }
@@ -85,9 +79,10 @@ public class AsciiTable {
             case .row:
                 output.append("\n│ ")
                 for index in (0..<columnAmount) {
-                    let data = row[safeIndex: index] ?? ""
-                    output.append(" \(data)")
-                    let spacing = columnWidth[index] - data.description.count
+                    let cell = row[safeIndex: index]
+                    let text = cell?.content ?? ""
+                    output.append(" \(text)")
+                    let spacing = columnWidth[index] - text.count
                     output.append((0...spacing).map { _ in " " }.joined())
                     output.append(" │")
                 }
@@ -107,34 +102,28 @@ extension AsciiTable: CustomStringConvertible {
     }
 }
 
-extension RowValues {
-    func size(for index: Int) -> Int {
-        self[safeIndex: index]??.description.count ?? 0
-    }
-}
-
 extension Row {
     var count: Int {
         switch self {
-        case .row(let rowValues):
-            rowValues.count
+        case .row(let cells):
+            cells.count
         case .divider:
             0
         }
     }
-    func size(for index: Int) -> Int {
+    func width(for index: Int) -> Int {
         switch self {
-        case .row(let rowValues):
-            rowValues.size(for: index)
+        case .row(let cells):
+            cells[safeIndex: index]?.width ?? 0
         case .divider:
             0
         }
     }
     
-    subscript(safeIndex index: Int) -> CustomStringConvertible? {
+    subscript(safeIndex index: Int) -> Cell? {
         switch self {
-        case .row(let rowValues):
-            rowValues[safeIndex: index] ?? nil
+        case .row(let cells):
+            cells[safeIndex: index] ?? nil
         case .divider:
             nil
         }
