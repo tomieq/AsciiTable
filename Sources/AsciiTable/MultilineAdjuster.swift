@@ -18,8 +18,8 @@ enum MultilineAdjuster {
                 adjustedRows.append(.row(cells.map { $0.extracted(line: line) }))
             }
             return adjustedRows
-        case .divider:
-            return [.divider]
+        default:
+            return [row]
         }
     }
 }

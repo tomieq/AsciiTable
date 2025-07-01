@@ -17,7 +17,7 @@ struct AsciiTableTests {
         let expected = """
         ╒══════════╤═══════════════╕
         │  A       │ BB            │
-        ├──────────┼───────────────┤
+        ╞══════════╪═══════════════╡
         │  cccccc  │ d             │
         │          │ ffffffffffff  │
         └──────────┴───────────────┘
@@ -47,9 +47,26 @@ struct AsciiTableTests {
         let expected = """
         ╒══════════╤═══════════════╕
         │  A       │ BB            │
-        ├──────────┼───────────────┤
+        ╞══════════╪═══════════════╡
         │  cccccc  │ d             │
         ├──────────┼───────────────┤
+        │          │ ffffffffffff  │
+        └──────────┴───────────────┘
+        """
+        #expect(table.output == expected)
+    }
+    @Test
+    func tableWithExtraDoubleDivider() {
+        let table = AsciiTable(labels: ["A", "BB"])
+        table.add(["cccccc", "d"])
+        table.addDoubleDivider()
+        table.add(["", "ffffffffffff"])
+        let expected = """
+        ╒══════════╤═══════════════╕
+        │  A       │ BB            │
+        ╞══════════╪═══════════════╡
+        │  cccccc  │ d             │
+        ╞══════════╪═══════════════╡
         │          │ ffffffffffff  │
         └──────────┴───────────────┘
         """
@@ -79,7 +96,7 @@ struct AsciiTableTests {
         let expected = """
         ╒══════════╤═══════════════╕
         │          │ BB            │
-        ├──────────┼───────────────┤
+        ╞══════════╪═══════════════╡
         │  cccccc  │ d             │
         │          │ ffffffffffff  │
         └──────────┴───────────────┘
@@ -95,7 +112,7 @@ struct AsciiTableTests {
         let expected = """
         ╒══════════╤═══════════════╕
         │  A       │ BB            │
-        ├──────────┼───────────────┤
+        ╞══════════╪═══════════════╡
         │  cccccc  │ d             │
         │          │ ffffffffffff  │
         └──────────┴───────────────┘
@@ -105,16 +122,16 @@ struct AsciiTableTests {
     @Test
     func tableWithMultilineCell() {
         let table = AsciiTable(labels: ["A", "BB\n(new version)\nModified", "C"])
-        table.add(["cccccc", "d\nd2\nd3", "ll"])
+        table.add(["cccccc\nc1", "d\nd2\nd3", "ll"])
         table.add(["s", "ffffffffffff", "g"])
         let expected = """
         ╒══════════╤════════════════════════════╤═════╕
         │  A       │ BB                         │ C   │
         │          │ (new version)              │     │
         │          │ Modified                   │     │
-        ├──────────┼────────────────────────────┼─────┤
+        ╞══════════╪════════════════════════════╪═════╡
         │  cccccc  │ d                          │ ll  │
-        │          │ d2                         │     │
+        │  c1      │ d2                         │     │
         │          │ d3                         │     │
         │  s       │ ffffffffffff               │ g   │
         └──────────┴────────────────────────────┴─────┘

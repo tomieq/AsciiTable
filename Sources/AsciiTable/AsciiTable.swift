@@ -29,6 +29,12 @@ public class AsciiTable {
         return self
     }
     
+    @discardableResult
+    public func addDoubleDivider() -> AsciiTable {
+        self.rows.append(.doubleDivider)
+        return self
+    }
+    
     public var output: String {
         var output = ""
         
@@ -37,11 +43,13 @@ public class AsciiTable {
         
         var topBorder = ""
         var middleDivider = "\n"
+        var headerDivider = "\n"
         var bottomBorder = "\n"
         
         topBorder.append("╒═")
         bottomBorder.append("└─")
         middleDivider.append("├─")
+        headerDivider.append("╞═")
         var columnWidth: [Int] = []
         for column in (0..<columnAmount) {
             let maxWidthFromRows = rows.map { $0.width(for: column) }.max() ?? 1
@@ -55,7 +63,10 @@ public class AsciiTable {
             bottomBorder.append(column == columnAmount - 1 ? "┘" : "┴")
             
             middleDivider.append(range.map{_ in "─" }.joined())
+            headerDivider.append(range.map{_ in "═" }.joined())
+            
             middleDivider.append(column == columnAmount - 1 ? "┤" : "┼")
+            headerDivider.append(column == columnAmount - 1 ? "╡" : "╪")
         }
         
         output.append(topBorder)
@@ -72,7 +83,7 @@ public class AsciiTable {
                     output.append(" │")
                 }
             }
-            output.append(middleDivider)
+            output.append(headerDivider)
         }
         for row in rows {
             switch row {
@@ -88,6 +99,8 @@ public class AsciiTable {
                 }
             case .divider:
                 output.append(middleDivider)
+            case .doubleDivider:
+                output.append(headerDivider)
             }
             
         }
@@ -107,7 +120,7 @@ extension Row {
         switch self {
         case .row(let cells):
             cells.count
-        case .divider:
+        default:
             0
         }
     }
@@ -115,7 +128,7 @@ extension Row {
         switch self {
         case .row(let cells):
             cells[safeIndex: index]?.width ?? 0
-        case .divider:
+        default:
             0
         }
     }
@@ -124,7 +137,7 @@ extension Row {
         switch self {
         case .row(let cells):
             cells[safeIndex: index] ?? nil
-        case .divider:
+        default:
             nil
         }
     }

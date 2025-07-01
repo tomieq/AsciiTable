@@ -10,4 +10,5 @@ public typealias RowValues = [CustomStringConvertible?]
 enum Row {
     case row([Cell])
     case divider
+    case doubleDivider
 }
