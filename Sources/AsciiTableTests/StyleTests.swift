@@ -107,7 +107,6 @@ struct StyleTests {
         ║  car        │ Mercedes  │ diesel  │ 4       ║
         ╚═════════════╧═══════════╧═════════╧═════════╝
         """
-        print(table)
         #expect(table.output == expected)
     }
     @Test

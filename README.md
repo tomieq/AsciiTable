@@ -2,7 +2,7 @@
 
 This is simple Swift library for formatting text tables.
 
-### Usage
+## Usage
 ```swift
 let table = AsciiTable(labels: ["endpoint", "allowed methods", "content-type"])
 table.add(["/warhouse", "POST", "application/json"])
@@ -23,12 +23,12 @@ Output:
 └────────────────────────┴──────────────────┴───────────────────┘
 ```
 
-### Styles
+## Styles
 
-You can configure border style and header divider style
+You can configure border style and header divider style.
 
-#### `StyleName.popular`
-Double header divider:
+### `StyleName.popular`
+With double header divider:
 ```
 ╒════════════════════════╤══════════════════╤═══════════════════╕
 │  endpoint              │ allowed methods  │ content-type      │
@@ -39,7 +39,7 @@ Double header divider:
 └────────────────────────┴──────────────────┴───────────────────┘
 ```
 
-Single header divider:
+With single header divider:
 ```
 ╒════════════════════════╤══════════════════╤═══════════════════╕
 │  endpoint              │ allowed methods  │ content-type      │
@@ -50,8 +50,8 @@ Single header divider:
 └────────────────────────┴──────────────────┴───────────────────┘
 ```
 
-#### `StyleName.singleBorder`
-Double header divider:
+### `StyleName.singleBorder`
+With double header divider:
 ```
 ┌────────────────────────┬──────────────────┬───────────────────┐
 │  endpoint              │ allowed methods  │ content-type      │
@@ -62,7 +62,7 @@ Double header divider:
 └────────────────────────┴──────────────────┴───────────────────┘
 ```
 
-Single header divider:
+With single header divider:
 ```
 ┌────────────────────────┬──────────────────┬───────────────────┐
 │  endpoint              │ allowed methods  │ content-type      │
@@ -73,8 +73,8 @@ Single header divider:
 └────────────────────────┴──────────────────┴───────────────────┘
 ```
 
-#### `StyleName.doubleBorder`
-Double header divider:
+### `StyleName.doubleBorder`
+With double header divider:
 ```
 ╔════════════════════════╤══════════════════╤═══════════════════╗
 ║  endpoint              │ allowed methods  │ content-type      ║
@@ -85,7 +85,7 @@ Double header divider:
 ╚════════════════════════╧══════════════════╧═══════════════════╝
 ```
 
-Single header divider:
+With single header divider:
 ```
 ╔════════════════════════╤══════════════════╤═══════════════════╗
 ║  endpoint              │ allowed methods  │ content-type      ║
@@ -96,8 +96,8 @@ Single header divider:
 ╚════════════════════════╧══════════════════╧═══════════════════╝
 ```
 
-#### `StyleName.noBorder`
-Double header divider:
+### `StyleName.noBorder`
+With double header divider:
 ```
    endpoint              │ allowed methods  │ content-type       
  ════════════════════════╪══════════════════╪═══════════════════ 
@@ -106,7 +106,7 @@ Double header divider:
    /admin/auth/v1/token  │ GET              │ application/json   
 ```
 
-Single header divider:
+With single header divider:
 ```
    endpoint              │ allowed methods  │ content-type       
  ────────────────────────┼──────────────────┼─────────────────── 
@@ -116,7 +116,7 @@ Single header divider:
 ```
 
 
-### Swift Package Manager.
+## Swift Package Manager.
 ```swift
 import PackageDescription
 

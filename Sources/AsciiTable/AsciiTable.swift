@@ -5,11 +5,7 @@
 //  Created by Tomasz Kucharski on 01/07/2025.
 //
 
-
-
-
 public class AsciiTable {
-    private let labels: Row
     private var rows: [Row]
     private let headerDividerStyle: HeaderDivider
     private let style: Style
@@ -17,8 +13,14 @@ public class AsciiTable {
     public init(labels: RowValues,
                 headerDivider: HeaderDivider = .double,
                 style styleName: StyleName = .popular) {
-        self.labels = .row(labels.cells)
-        self.rows = []
+        self.rows = labels.isEmpty ? [] : {
+            [.row(labels.cells), {
+                switch headerDivider {
+                case .single:   .divider
+                case .double:   .doubleDivider
+                }
+            }()]
+        }()
         self.headerDividerStyle = headerDivider
         self.style = styleName.style
     }
@@ -45,7 +47,7 @@ public class AsciiTable {
         var output = ""
         
         let rows = rows.flatMap { MultilineAdjuster.adjust($0) }
-        let columnAmount = max(rows.map { $0.count }.max() ?? 1, labels.count)
+        let columnAmount = rows.map { $0.count }.max() ?? 1
         
         var topBorder = ""
         var divider = "\n"
@@ -57,57 +59,35 @@ public class AsciiTable {
         divider.append(style[.dividerLeft])
         doubleDivider.append(style[.doubleDividerLeft])
         var columnWidth: [Int] = []
-        for column in (0..<columnAmount) {
-            let maxWidthFromRows = rows.map { $0.width(for: column) }.max() ?? 1
-            let maxWidth = max(maxWidthFromRows, labels[safeIndex: column]?.content.count ?? 1)
+        for column in 0..<columnAmount {
+            let isLast = column == columnAmount - 1
+            let maxWidth = rows.map { $0.width(for: column) }.max() ?? 1
             columnWidth.append(maxWidth)
-            let range = 0...(maxWidth + 2)
-            topBorder.append(range.map{_ in style[.top] }.joined())
-            topBorder.append(column == columnAmount - 1 ? style[.topRight] : style[.topCross])
+            let width = maxWidth + 3
+            topBorder.append(String(repeating: style[.top], count: width))
+            topBorder.append(isLast ? style[.topRight] : style[.topCross])
             
-            bottomBorder.append(range.map{_ in style[.bottom] }.joined())
-            bottomBorder.append(column == columnAmount - 1 ? style[.bottomRight] : style[.bottomCross])
+            bottomBorder.append(String(repeating: style[.bottom], count: width))
+            bottomBorder.append(isLast ? style[.bottomRight] : style[.bottomCross])
             
-            divider.append(range.map{_ in style[.divider] }.joined())
-            doubleDivider.append(range.map{_ in style[.doubleDivider] }.joined())
+            divider.append(String(repeating: style[.divider], count: width))
+            divider.append(isLast ? style[.dividerRight] : style[.dividerCross])
             
-            divider.append(column == columnAmount - 1 ? style[.dividerRight] : style[.dividerCross])
-            doubleDivider.append(column == columnAmount - 1 ? style[.doubleDividerRight] : style[.doubleDividerCross])
+            doubleDivider.append(String(repeating: style[.doubleDivider], count: width))
+            doubleDivider.append(isLast ? style[.doubleDividerRight] : style[.doubleDividerCross])
         }
-        
         output.append(topBorder)
-        if labels.count > 0 {
-            let labelsAdjusted = MultilineAdjuster.adjust(labels)
-            for labels in labelsAdjusted {
-                output.append("\n\(style[.outerWall]) ")
-                for index in (0..<columnAmount) {
-                    let cell = labels[safeIndex: index]
-                    let text = cell?.content ?? ""
-                    output.append(" \(text)")
-                    let spacing = columnWidth[index] - text.count + 1
-                    output.append((0...spacing).map { _ in " " }.joined())
-                    output.append(index == columnAmount - 1 ? style[.outerWall] : style[.innerWall])
-                }
-            }
-            switch headerDividerStyle {
-                
-            case .single:
-                output.append(divider)
-            case .double:
-                output.append(doubleDivider)
-            }
-        }
+        
         for row in rows {
             switch row {
             case .row:
                 output.append("\n\(style[.outerWall]) ")
                 for index in (0..<columnAmount) {
-                    let cell = row[safeIndex: index]
-                    let text = cell?.content ?? ""
+                    let isLast = index == columnAmount - 1
+                    let text = row[safeIndex: index]?.content ?? ""
                     output.append(" \(text)")
-                    let spacing = columnWidth[index] - text.count + 1
-                    output.append((0...spacing).map { _ in " " }.joined())
-                    output.append(index == columnAmount - 1 ? style[.outerWall] : style[.innerWall])
+                    output.append(String(repeating: " ", count: columnWidth[index] - text.count + 2))
+                    output.append(isLast ? style[.outerWall] : style[.innerWall])
                 }
             case .divider:
                 output.append(divider)
@@ -124,33 +104,5 @@ public class AsciiTable {
 extension AsciiTable: CustomStringConvertible {
     public var description: String {
         output
-    }
-}
-
-extension Row {
-    var count: Int {
-        switch self {
-        case .row(let cells):
-            cells.count
-        default:
-            0
-        }
-    }
-    func width(for index: Int) -> Int {
-        switch self {
-        case .row(let cells):
-            cells[safeIndex: index]?.width ?? 0
-        default:
-            0
-        }
-    }
-    
-    subscript(safeIndex index: Int) -> Cell? {
-        switch self {
-        case .row(let cells):
-            cells[safeIndex: index] ?? nil
-        default:
-            nil
-        }
     }
 }

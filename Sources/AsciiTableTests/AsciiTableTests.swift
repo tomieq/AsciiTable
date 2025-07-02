@@ -125,16 +125,16 @@ struct AsciiTableTests {
         table.add(["cccccc\nc1", "d\nd2\nd3", "ll"])
         table.add(["s", "ffffffffffff", "g"])
         let expected = """
-        ╒══════════╤════════════════════════════╤═════╕
-        │  A       │ BB                         │ C   │
-        │          │ (new version)              │     │
-        │          │ Modified                   │     │
-        ╞══════════╪════════════════════════════╪═════╡
-        │  cccccc  │ d                          │ ll  │
-        │  c1      │ d2                         │     │
-        │          │ d3                         │     │
-        │  s       │ ffffffffffff               │ g   │
-        └──────────┴────────────────────────────┴─────┘
+        ╒══════════╤════════════════╤═════╕
+        │  A       │ BB             │ C   │
+        │          │ (new version)  │     │
+        │          │ Modified       │     │
+        ╞══════════╪════════════════╪═════╡
+        │  cccccc  │ d              │ ll  │
+        │  c1      │ d2             │     │
+        │          │ d3             │     │
+        │  s       │ ffffffffffff   │ g   │
+        └──────────┴────────────────┴─────┘
         """
         #expect(table.output == expected)
     }
