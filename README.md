@@ -122,8 +122,8 @@ You can add horizontal lines between rows with `.addDivider()` or `.addDoubleDiv
 Sample code:
 ```swift
 let table = AsciiTable(labels: ["endpoint", "allowed methods", "content-type"],
-                       headerDivider: .double,
-                       style: .popular)
+                       style: .popular,
+                       headerDivider: .double)
 table.add(["/warhouse", "POST", "application/json"])
 table.addDivider()
 table.add(["/shop", "GET", "text/html"])

@@ -10,10 +10,10 @@ import AsciiTable
 
 struct StyleTests {
     @Test
-    func singleDividerPopular() {
+    func popularSingleDivider() {
         let table = AsciiTable(labels: labels,
-                               headerDivider: .single,
-                               style: .popular)
+                               style: .popular,
+                               headerDivider: .single)
         fill(table)
         let expected = """
         ╒═════════════╤═══════════╤═════════╤═════════╕
@@ -30,10 +30,8 @@ struct StyleTests {
         #expect(table.output == expected)
     }
     @Test
-    func doubleDividerPopular() {
-        let table = AsciiTable(labels: labels,
-                               headerDivider: .double,
-                               style: .popular)
+    func popularDoubleDivider() {
+        let table = AsciiTable(labels: labels, style: .popular, headerDivider: .double)
         fill(table)
         let expected = """
         ╒═════════════╤═══════════╤═════════╤═════════╕
@@ -50,10 +48,8 @@ struct StyleTests {
         #expect(table.output == expected)
     }
     @Test
-    func singleDividerSingleBorder() {
-        let table = AsciiTable(labels: labels,
-                               headerDivider: .single,
-                               style: .singleBorder)
+    func singleBorderSingleDivider() {
+        let table = AsciiTable(labels: labels, style: .singleBorder, headerDivider: .single)
         fill(table)
         let expected = """
         ┌─────────────┬───────────┬─────────┬─────────┐
@@ -70,10 +66,8 @@ struct StyleTests {
         #expect(table.output == expected)
     }
     @Test
-    func doubleDividerSingleBorder() {
-        let table = AsciiTable(labels: labels,
-                               headerDivider: .double,
-                               style: .singleBorder)
+    func singleBorderDoubleDivider() {
+        let table = AsciiTable(labels: labels, style: .singleBorder, headerDivider: .double)
         fill(table)
         let expected = """
         ┌─────────────┬───────────┬─────────┬─────────┐
@@ -90,10 +84,8 @@ struct StyleTests {
         #expect(table.output == expected)
     }
     @Test
-    func singleDividerDoubleBorder() {
-        let table = AsciiTable(labels: labels,
-                               headerDivider: .single,
-                               style: .doubleBorder)
+    func doubleBorderSingleDivider() {
+        let table = AsciiTable(labels: labels, style: .doubleBorder, headerDivider: .single)
         fill(table)
         let expected = """
         ╔═════════════╤═══════════╤═════════╤═════════╗
@@ -110,10 +102,8 @@ struct StyleTests {
         #expect(table.output == expected)
     }
     @Test
-    func doubleDividerDoubleBorder() {
-        let table = AsciiTable(labels: labels,
-                               headerDivider: .double,
-                               style: .doubleBorder)
+    func doubleBorderDoubleDivider() {
+        let table = AsciiTable(labels: labels, style: .doubleBorder, headerDivider: .double)
         fill(table)
         let expected = """
         ╔═════════════╤═══════════╤═════════╤═════════╗
@@ -130,10 +120,8 @@ struct StyleTests {
         #expect(table.output == expected)
     }
     @Test
-    func singleDividerNoBorder() {
-        let table = AsciiTable(labels: labels,
-                               headerDivider: .single,
-                               style: .noBorder)
+    func noBorderSingleDivider() {
+        let table = AsciiTable(labels: labels, style: .noBorder, headerDivider: .single)
         fill(table)
         let expected = """
                                                        
@@ -150,10 +138,8 @@ struct StyleTests {
         #expect(table.output == expected)
     }
     @Test
-    func doubleDividerNoBorder() {
-        let table = AsciiTable(labels: labels,
-                               headerDivider: .double,
-                               style: .noBorder)
+    func noBorderDoubleDivider() {
+        let table = AsciiTable(labels: labels, style: .noBorder, headerDivider: .double)
         fill(table)
         let expected = """
                                                        

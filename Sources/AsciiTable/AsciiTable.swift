@@ -11,8 +11,8 @@ public class AsciiTable {
     private let style: Style
     
     public init(labels: RowValues,
-                headerDivider: HeaderDivider = .double,
-                style styleName: StyleName = .popular) {
+                style styleName: StyleName = .popular,
+                headerDivider: HeaderDivider = .double) {
         self.rows = labels.isEmpty ? [] : {
             [.row(labels.cells), {
                 switch headerDivider {
