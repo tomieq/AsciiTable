@@ -11,7 +11,7 @@ public class AsciiTable {
     private let style: Style
     
     public init(labels: RowValues,
-                style styleName: StyleName = .popular,
+                borderStyle styleName: StyleName = .popular,
                 headerDivider: HeaderDivider = .double) {
         self.rows = labels.isEmpty ? [] : {
             [.row(labels.cells), {
