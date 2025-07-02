@@ -23,6 +23,99 @@ Output:
 └────────────────────────┴──────────────────┴───────────────────┘
 ```
 
+### Styles
+
+You can configure border style and header divider style
+
+#### `StyleName.popular`
+Double header divider:
+```
+╒════════════════════════╤══════════════════╤═══════════════════╕
+│  endpoint              │ allowed methods  │ content-type      │
+╞════════════════════════╪══════════════════╪═══════════════════╡
+│  /warhouse             │ POST             │ application/json  │
+│  /shop                 │ GET              │ text/html         │
+│  /admin/auth/v1/token  │ GET              │ application/json  │
+└────────────────────────┴──────────────────┴───────────────────┘
+```
+
+Single header divider:
+```
+╒════════════════════════╤══════════════════╤═══════════════════╕
+│  endpoint              │ allowed methods  │ content-type      │
+├────────────────────────┼──────────────────┼───────────────────┤
+│  /warhouse             │ POST             │ application/json  │
+│  /shop                 │ GET              │ text/html         │
+│  /admin/auth/v1/token  │ GET              │ application/json  │
+└────────────────────────┴──────────────────┴───────────────────┘
+```
+
+#### `StyleName.singleBorder`
+Double header divider:
+```
+┌────────────────────────┬──────────────────┬───────────────────┐
+│  endpoint              │ allowed methods  │ content-type      │
+╞════════════════════════╪══════════════════╪═══════════════════╡
+│  /warhouse             │ POST             │ application/json  │
+│  /shop                 │ GET              │ text/html         │
+│  /admin/auth/v1/token  │ GET              │ application/json  │
+└────────────────────────┴──────────────────┴───────────────────┘
+```
+
+Single header divider:
+```
+┌────────────────────────┬──────────────────┬───────────────────┐
+│  endpoint              │ allowed methods  │ content-type      │
+├────────────────────────┼──────────────────┼───────────────────┤
+│  /warhouse             │ POST             │ application/json  │
+│  /shop                 │ GET              │ text/html         │
+│  /admin/auth/v1/token  │ GET              │ application/json  │
+└────────────────────────┴──────────────────┴───────────────────┘
+```
+
+#### `StyleName.doubleBorder`
+Double header divider:
+```
+╔════════════════════════╤══════════════════╤═══════════════════╗
+║  endpoint              │ allowed methods  │ content-type      ║
+╠════════════════════════╪══════════════════╪═══════════════════╣
+║  /warhouse             │ POST             │ application/json  ║
+║  /shop                 │ GET              │ text/html         ║
+║  /admin/auth/v1/token  │ GET              │ application/json  ║
+╚════════════════════════╧══════════════════╧═══════════════════╝
+```
+
+Single header divider:
+```
+╔════════════════════════╤══════════════════╤═══════════════════╗
+║  endpoint              │ allowed methods  │ content-type      ║
+╟────────────────────────┼──────────────────┼───────────────────╢
+║  /warhouse             │ POST             │ application/json  ║
+║  /shop                 │ GET              │ text/html         ║
+║  /admin/auth/v1/token  │ GET              │ application/json  ║
+╚════════════════════════╧══════════════════╧═══════════════════╝
+```
+
+#### `StyleName.noBorder`
+Double header divider:
+```
+   endpoint              │ allowed methods  │ content-type       
+ ════════════════════════╪══════════════════╪═══════════════════ 
+   /warhouse             │ POST             │ application/json   
+   /shop                 │ GET              │ text/html         
+   /admin/auth/v1/token  │ GET              │ application/json   
+```
+
+Single header divider:
+```
+   endpoint              │ allowed methods  │ content-type       
+ ────────────────────────┼──────────────────┼─────────────────── 
+   /warhouse             │ POST             │ application/json   
+   /shop                 │ GET              │ text/html          
+   /admin/auth/v1/token  │ GET              │ application/json
+```
+
+
 ### Swift Package Manager.
 ```swift
 import PackageDescription
@@ -30,7 +123,7 @@ import PackageDescription
 let package = Package(
     name: "MyServer",
     dependencies: [
-        .package(url: "https://github.com/tomieq/AsciiTable", from: "1.1.0")
+        .package(url: "https://github.com/tomieq/AsciiTable", from: "2.0.0")
     ]
 )
 ```
