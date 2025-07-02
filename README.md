@@ -115,6 +115,35 @@ With single header divider:
    /admin/auth/v1/token  │ GET              │ application/json
 ```
 
+### Dividers
+
+You can add horizontal lines between rows with `.addDivider()` or `.addDoubleDivider()`
+
+Sample code:
+```swift
+let table = AsciiTable(labels: ["endpoint", "allowed methods", "content-type"],
+                       headerDivider: .double,
+                       style: .popular)
+table.add(["/warhouse", "POST", "application/json"])
+table.addDivider()
+table.add(["/shop", "GET", "text/html"])
+table.addDivider()
+table.add(["/admin/auth/v1/token", "GET", "application/json"])
+print(table)
+```
+
+Output:
+```
+╒════════════════════════╤══════════════════╤═══════════════════╕
+│  endpoint              │ allowed methods  │ content-type      │
+╞════════════════════════╪══════════════════╪═══════════════════╡
+│  /warhouse             │ POST             │ application/json  │
+├────────────────────────┼──────────────────┼───────────────────┤
+│  /shop                 │ GET              │ text/html         │
+├────────────────────────┼──────────────────┼───────────────────┤
+│  /admin/auth/v1/token  │ GET              │ application/json  │
+└────────────────────────┴──────────────────┴───────────────────┘
+```
 
 ## Swift Package Manager.
 ```swift
