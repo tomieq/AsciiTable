@@ -9,12 +9,18 @@
 
 
 public class AsciiTable {
-    let labels: Row
-    var rows: [Row]
+    private let labels: Row
+    private var rows: [Row]
+    private let headerDividerStyle: HeaderDivider
+    private let style: Style
     
-    public init(labels: RowValues) {
+    public init(labels: RowValues,
+                headerDivider: HeaderDivider = .double,
+                style styleName: StyleName = .popular) {
         self.labels = .row(labels.cells)
         self.rows = []
+        self.headerDividerStyle = headerDivider
+        self.style = styleName.style
     }
     
     @discardableResult
@@ -42,65 +48,71 @@ public class AsciiTable {
         let columnAmount = max(rows.map { $0.count }.max() ?? 1, labels.count)
         
         var topBorder = ""
-        var middleDivider = "\n"
-        var headerDivider = "\n"
+        var divider = "\n"
+        var doubleDivider = "\n"
         var bottomBorder = "\n"
         
-        topBorder.append("╒═")
-        bottomBorder.append("└─")
-        middleDivider.append("├─")
-        headerDivider.append("╞═")
+        topBorder.append(style[.topLeft])
+        bottomBorder.append(style[.bottomLeft])
+        divider.append(style[.dividerLeft])
+        doubleDivider.append(style[.doubleDividerLeft])
         var columnWidth: [Int] = []
         for column in (0..<columnAmount) {
             let maxWidthFromRows = rows.map { $0.width(for: column) }.max() ?? 1
             let maxWidth = max(maxWidthFromRows, labels[safeIndex: column]?.content.count ?? 1)
             columnWidth.append(maxWidth)
             let range = 0...(maxWidth + 2)
-            topBorder.append(range.map{_ in "═" }.joined())
-            topBorder.append(column == columnAmount - 1 ? "╕" : "╤")
+            topBorder.append(range.map{_ in style[.top] }.joined())
+            topBorder.append(column == columnAmount - 1 ? style[.topRight] : style[.topCross])
             
-            bottomBorder.append(range.map{_ in "─" }.joined())
-            bottomBorder.append(column == columnAmount - 1 ? "┘" : "┴")
+            bottomBorder.append(range.map{_ in style[.bottom] }.joined())
+            bottomBorder.append(column == columnAmount - 1 ? style[.bottomRight] : style[.bottomCross])
             
-            middleDivider.append(range.map{_ in "─" }.joined())
-            headerDivider.append(range.map{_ in "═" }.joined())
+            divider.append(range.map{_ in style[.divider] }.joined())
+            doubleDivider.append(range.map{_ in style[.doubleDivider] }.joined())
             
-            middleDivider.append(column == columnAmount - 1 ? "┤" : "┼")
-            headerDivider.append(column == columnAmount - 1 ? "╡" : "╪")
+            divider.append(column == columnAmount - 1 ? style[.dividerRight] : style[.dividerCross])
+            doubleDivider.append(column == columnAmount - 1 ? style[.doubleDividerRight] : style[.doubleDividerCross])
         }
         
         output.append(topBorder)
         if labels.count > 0 {
             let labelsAdjusted = MultilineAdjuster.adjust(labels)
             for labels in labelsAdjusted {
-                output.append("\n│ ")
+                output.append("\n\(style[.outerWall]) ")
                 for index in (0..<columnAmount) {
                     let cell = labels[safeIndex: index]
                     let text = cell?.content ?? ""
                     output.append(" \(text)")
-                    let spacing = columnWidth[index] - text.count
+                    let spacing = columnWidth[index] - text.count + 1
                     output.append((0...spacing).map { _ in " " }.joined())
-                    output.append(" │")
+                    output.append(index == columnAmount - 1 ? style[.outerWall] : style[.innerWall])
                 }
             }
-            output.append(headerDivider)
+            switch headerDividerStyle {
+                
+            case .single:
+                output.append(divider)
+            case .double:
+                output.append(doubleDivider)
+            }
         }
         for row in rows {
             switch row {
             case .row:
-                output.append("\n│ ")
+                output.append("\n\(style[.outerWall]) ")
                 for index in (0..<columnAmount) {
                     let cell = row[safeIndex: index]
                     let text = cell?.content ?? ""
                     output.append(" \(text)")
-                    let spacing = columnWidth[index] - text.count
+                    let spacing = columnWidth[index] - text.count + 1
                     output.append((0...spacing).map { _ in " " }.joined())
-                    output.append(" │")
+                    output.append(index == columnAmount - 1 ? style[.outerWall] : style[.innerWall])
                 }
             case .divider:
-                output.append(middleDivider)
+                output.append(divider)
             case .doubleDivider:
-                output.append(headerDivider)
+                output.append(doubleDivider)
             }
             
         }
